@@ -1,91 +1,83 @@
-# Fleetbase Multi-Carrier PHP SDK
+# Omniship: FedEx
 
-[![Source Code][badge-source]][source]
-[![Latest Version][badge-release]][packagist]
-[![Software License][badge-license]][license]
-[![PHP Version][badge-php]][php]
-[![Build Status][badge-build]][build]
-[![Coverage Status][badge-coverage]][coverage]
-[![Total Downloads][badge-downloads]][downloads]
+**FedEx driver for the Omniship PHP shipping service provider library**
 
-Fleetbase Multi-Carrier PHP SDK
+[![Build Status](https://travis-ci.org/thephpleague/omniship-fedex.png?branch=master)](https://travis-ci.org/thephpleague/omnipay-stripe)
+[![Latest Stable Version](https://poser.pugx.org/omnipay/stripe/version.png)](https://packagist.org/packages/omnipay/stripe)
+[![Total Downloads](https://poser.pugx.org/omnipay/stripe/d/total.png)](https://packagist.org/packages/omnipay/stripe)
 
-This project adheres to a [Contributor Code of Conduct][conduct]. By
-participating in this project and its community, you are expected to uphold this
-code.
-
-
-## Requirements
-
-PHP 7.4 and later.
-
+[Omniship](https://github.com/fleetbase/omniship) is a framework agnostic, multi-carrier shipping
+service provider library for PHP. This package implements FedEx support for Omniship.
 
 ## Installation
 
-The preferred method of installation is via [Composer][]. Run the following
-command to install the package and add it as a requirement to your project's
-`composer.json`:
+Omniship is installed via [Composer](http://getcomposer.org/). To install, simply require `fleetbase/omniship` and `omniship/fedex` with Composer:
 
-```bash
-composer require fleetbase/omniship-php
+```
+composer require fleetbase/omniship omniship/fedex
 ```
 
+## Basic Usage
 
-## Quick Start
+The following services are provided by this package:
 
-Simple usage looks like:
+- [Address Validation](https://developer.fedex.com/api/en-ca/catalog/address-validation.html#/api)
+- [FedEx Locations Search](https://developer.fedex.com/api/en-ca/catalog/locations.html#/api)
+- [Freight LTL API](https://developer.fedex.com/api/en-ca/catalog/ltl-freight.html#/api)
+- [Global Trade API](https://developer.fedex.com/api/en-ca/catalog/global-trade.html#/api)
+- [Ship API](https://developer.fedex.com/api/en-ca/catalog/ship.html#/api)
+- [Ground End of Day Close API](https://developer.fedex.com/api/en-ca/catalog/close.html#/api)
+- [Open Ship API](https://developer.fedex.com/api/en-ca/catalog/open-ship.html#/api)
+- [Pickup Request API](https://developer.fedex.com/api/en-ca/catalog/pickup.html#/api)
+- [Postal Code Validation API](https://developer.fedex.com/api/en-ca/catalog/postal-code.html#/api)
+- [Service Availability API](https://developer.fedex.com/api/en-ca/catalog/service-availability.html#/api)
+- [Track API](https://developer.fedex.com/api/en-ca/catalog/track.html#/api)
+- [Trade Documents Upload API](https://developer.fedex.com/api/en-ca/catalog/upload-documents.html#/api)
+
+For general usage instructions, please see the main [Omniship](https://github.com/fleetbase/omniship)
+repository.
+
+### Create a Shipment
 
 ```php
-use Fleetbase\Omniship;
+use Omniship\Omniship;
 
-$carrier = Omniship::create('FedEx');
-$carrier->setCredentials([]);
+$fedex = Omniship::create('FedEx');
 
-$serviceQuotes = $carrier->getQuote([]);
-$order = $serviceQuotes->first()->purchase();
+$fedex->initialize([
+    'api_key' => '#'
+]);
 
-if ($order->isSuccessful()) {
-    // Order was successful
-} else {
-    // Order failed
-}
+$shipment = $fedex->createShipment([]);
 ```
 
-## Documentation
+## Test Mode
 
-Check out the [documentation website][documentation] for detailed information
-and code examples.
+FedEx developer accounts are provided with live and test api keys, the test api keys are to be used on the sandbox host.
+To use sandbox host initialize the FedEx service provider as shown below.
 
+```php
+use Omniship\Omniship;
 
-## Contributing
+$fedex = Omniship::create('FedEx');
 
-Contributions are welcome! Please read [CONTRIBUTING][] for details.
+/** 
+ * initialize() takes two params
+ * @param array $params Arguments to initialize
+ * @param bool $sandbox Use sandbox host
+ */
+$fedex->initialize([], true);
+```
 
+## Support
 
-## Copyright and License
+If you are having general issues with Omniship, we suggest posting on
+[Stack Overflow](http://stackoverflow.com/). Be sure to add the
+[omniship tag](http://stackoverflow.com/questions/tagged/omniship) so it can be easily found.
 
-The fleetbase/omniship-php library is copyright © [Fleetbase Pte Ltd.](https://fleetbase.io)
-and licensed for use under the MIT License (MIT). Please see [LICENSE][] for
-more information.
+If you want to keep up to date with release anouncements, discuss ideas for the project,
+or ask more detailed questions, there is also a [discord group](https://discord.com/invite/fjP4sReEvH) which
+you can join.
 
-
-[conduct]: https://github.com/fleetbase/omniship-php/blob/master/.github/CODE_OF_CONDUCT.md
-[composer]: http://getcomposer.org/
-[documentation]: https://fleetbase.github.io/omniship-php/
-[contributing]: https://github.com/fleetbase/omniship-php/blob/master/.github/CONTRIBUTING.md
-
-[badge-source]: http://img.shields.io/badge/source-fleetbase/fleetbase--php-blue.svg?style=flat-square
-[badge-release]: https://img.shields.io/packagist/v/fleetbase/omniship-php.svg?style=flat-square&label=release
-[badge-license]: https://img.shields.io/packagist/l/fleetbase/omniship-php.svg?style=flat-square
-[badge-php]: https://img.shields.io/packagist/php-v/fleetbase/omniship-php.svg?style=flat-square
-[badge-build]: https://img.shields.io/travis/fleetbase/omniship-php/master.svg?style=flat-square
-[badge-coverage]: https://img.shields.io/coveralls/github/fleetbase/omniship-php/master.svg?style=flat-square
-[badge-downloads]: https://img.shields.io/packagist/dt/fleetbase/omniship-php.svg?style=flat-square&colorB=mediumvioletred
-
-[source]: https://github.com/fleetbase/omniship-php
-[packagist]: https://packagist.org/packages/fleetbase/omniship-php
-[license]: https://github.com/fleetbase/omniship-php/blob/master/LICENSE
-[php]: https://php.net
-[build]: https://travis-ci.org/fleetbase/omniship-php
-[coverage]: https://coveralls.io/r/fleetbase/omniship-php?branch=master
-[downloads]: https://packagist.org/packages/fleetbase/omniship-php
+If you believe you have found a bug, please report it using the [GitHub issue tracker](https://github.com/fleetbase/omniship-common/issues),
+or better yet, fork the library and submit a pull request.
